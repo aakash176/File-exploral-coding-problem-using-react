@@ -3,6 +3,7 @@ import {BsFolderPlus} from 'react-icons/bs'
 import {AiOutlineFileAdd} from 'react-icons/ai'
 
 const File = ({data}) =>{
+    const [fileName, setFileName] = useState('')
     const [add, setAdd] = useState({
         showInput:false,
         isFolder:null
@@ -15,9 +16,25 @@ const File = ({data}) =>{
         })
     }
     const [click, setClick] = useState(false)
+    const handleKeyDown = (e) => {
+        if(e.key === "Enter" && e.target.value){
+            console.log(e.target.value);
+            var obj = {
+                id:Number(data.id)+1,
+                name:e.target.value,
+                isFolder:add.isFolder,
+                items:[]
+            }
+            console.log('obj', obj);
+            data.items.push(obj)
+            setAdd({...add, showInput:false})
+        }
+    }
     const handleClick = () => {
         setClick(!click)
     }
+    
+    
     return (
         <div style={{marginLeft:"20px"}}>
             {
@@ -37,7 +54,7 @@ const File = ({data}) =>{
                                         add.isFolder?'📁':'📄'
                                     }
                                 </span> 
-                                <input type='text' autoFocus onBlur={()=>setAdd({...add, showInput:false})} />
+                                <input style={{marginLeft:'20px'}} onChange={(e)=>setFileName(e.target.value)} onKeyDown={(e)=>handleKeyDown(e)} type='text' autoFocus onBlur={()=>setAdd({...add, showInput:false})} />
                             </div>
                             )
 
